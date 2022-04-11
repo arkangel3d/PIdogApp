@@ -3,7 +3,7 @@ const {Temperament} = require('./src/db.js')
 const copyTemp = async(objs)=>{
     let temperaments = []
     objs.map((dog)=>{
-        let dataTemperament = dog.temperament?.split(',');
+        let dataTemperament = dog.temperament?.split(', ');
          dataTemperament?.forEach((element)=>{
             
           temperaments.push(element)
