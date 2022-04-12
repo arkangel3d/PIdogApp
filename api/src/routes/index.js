@@ -3,9 +3,9 @@ const axios = require("axios");
 const { Op } = require("sequelize");
 const { API_KEY } = process.env;
 
-const { sequelize, Dog, Temperament, Dog_Temperament } = require("../db");
+const { sequelize, Dog, Temperament, Image } = require("../db");
 
-const { idGenerator } = require("../../utils.js");
+const { idGenerator, sortData, sortDogsApi } = require("../../utils.js");
 const { copyTemp } = require("../../copyTemperaments.js");
 
 const url = `https://api.thedogapi.com/v1/breeds?api_key=${API_KEY}`;
@@ -19,11 +19,22 @@ const router = Router();
 
 router.get("/dogs", async (req, res) => {
   const { name } = req.query;
+  
   const dogsApi = await axios.get(url);
-  const dogsDataBase = await Dog.findAll({ include: Temperament });
-
-  let response = dogsApi.data.concat(dogsDataBase);
-  //await copyTemp(response); //COPIAR TEMPERAMENTOS DESDE LA API  A LA BASE DE DATOS
+  const dogsApiSorted = dogsApi.data.map((d)=>{
+    const {id,name, height, weight, life_span, temperament, image} =d;
+    return sortDogsApi(id,name, height, weight, life_span, temperament, image)
+  })
+  const dogsDataBase = await Dog.findAll({ include: Temperament, });
+  
+  const data = dogsDataBase.map(async(dog) => {
+    const { id, name, height, weight, life_span, temperaments, imageId } = dog;
+    return await sortData(id, name, height, weight, life_span, temperaments, imageId);
+  });
+  const dataResults = await Promise.all(data)
+  let response = dogsApiSorted.concat(dataResults);
+// ++++COPIAR TEMPERAMENTOS DESDE LA API  A LA BASE DE DATOS+++++
+        //  await copyTemp(response); 
   if (name) {
     let dataArray = response.filter((dog) =>
       dog.name.toLowerCase().includes(name.toLowerCase())
@@ -35,20 +46,36 @@ router.get("/dogs", async (req, res) => {
 
 router.get("/dogs/:id", async (req, res) => {
   const { id } = req.params;
-  const dogsApi = await axios(url);
-  const dogsDataBase = await Dog.findAll({ include: Temperament });
-  let response = dogsApi.data.concat(dogsDataBase);
+  
+  const dogsApi = await axios.get(url);
+  const dogsApiSorted = dogsApi.data.map((d)=>{
+    const {id,name, height, weight, life_span, temperament, image} =d;
+    return sortDogsApi(id,name, height, weight, life_span, temperament, image)
+  })
+  const dogsDataBase = await Dog.findAll({ include: Temperament, });
+  
+  const data = dogsDataBase.map(async(dog) => {
+    const { id, name, height, weight, life_span, temperaments, imageId } = dog;
+    return await sortData(id, name, height, weight, life_span, temperaments, imageId);
+  });
+  const dataResults = await Promise.all(data)
+  let response = dogsApiSorted.concat(dataResults);
   const dataArray = response.find((dog) => dog.id === Number(id));
   if (!dataArray) return res.status(404).send("id no encontrado");
   return res.json(dataArray);
 });
 
 router.post("/dog", async (req, res) => {
-  let { name, height, weight, life_span, temperament } = req.body;
+  let { name, height, weight, life_span, temperament,image } = req.body;
+ 
   let id = idGenerator(name, life_span);
 
   try {
     let dog = await Dog.create({ id, name, height, weight, life_span });
+    // fooInstance.createBar()
+      // await dog.createImage({image:image});
+      let imagen = await dog.createImage({image:image});
+      
     let getIdsTemperaments = await temperament.map(async (element) => {
       let responseTemp = await Temperament.findOne({
         where: {
@@ -61,19 +88,46 @@ router.post("/dog", async (req, res) => {
 
     await dog.setTemperaments(idsTemperaments);
 
-    dog.dataValues.temperaments = temperament.join(", ");
-
+    dog.dataValues.temperament = temperament.join(", ");
+    dog.dataValues.image = imagen;
     res.status(201).json(dog);
   } catch (error) {
     res.status(402).send(error);
   }
 });
 router.get("/temperament", async (req, res) => {
-  try {
-    const getTemperamentDataBase = await Temperament.findAll();
-    res.json(getTemperamentDataBase);
-  } catch (error) {
-    res.send(error);
-  }
+  const dogsApi = await axios.get(url);
+  const dogsDataBase = await Dog.findAll({ include: Temperament });
+  
+  const dogsApiSorted = dogsApi.data.map((d)=>{
+    const {id,name, height, weight, life_span, temperament, image} =d;
+    return sortDogsApi(id,name, height, weight, life_span, temperament, image)
+  })
+  // let response = dogsApi.data.concat(dogsDataBase);
+  const data = dogsDataBase.map(async(dog) => {
+    const { id, name, height, weight, life_span, temperaments, imageId } = dog;
+    return await sortData(id, name, height, weight, life_span, temperaments, imageId);
+  });
+  const dataResults = await Promise.all(data)
+  let response = dogsApiSorted.concat(dataResults);
+  const getTemperamentDataBase = await Temperament.findAll();
+  let temperamentDog = getTemperamentDataBase.map((element) => {
+    let arrayDogs = [];
+    response.forEach((dog) => {
+      let arrayTemperamets = dog.temperament?.split(", ");
+
+      if (arrayTemperamets?.some((t) => t === element.name)) {
+        arrayDogs.push(dog.name);
+      }
+    });
+    let obj = {
+      id : element.id,
+      temperament: element.name,
+      raza: arrayDogs,
+    };
+    return obj;
+  });
+  res.json(temperamentDog);
+  
 });
 module.exports = router;
