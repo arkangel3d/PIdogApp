@@ -1,0 +1,62 @@
+
+  
+.dogCard{
+    width: 550px;
+    height: 180px;
+    border: 1px solid #000;
+    border-radius: 15px;
+    
+}
+ .buttonClose{
+     position: absolute;
+     margin-left: 140px;
+     margin-top: 5px;
+     border-radius: 1px;
+     background-color: #CCE5FF
+ }
+ .centerBox{
+    display: inline-block;
+    margin: 15px;
+    
+    
+ }
+
+ .elementCards{
+    
+     margin: 20px;
+     margin-top: 30px;
+     font-size: large;
+     margin-left: 10px;
+              
+ }
+ .elementImg{
+     width: 150px; 
+     /* height: 50px; */
+     margin-right: 10px;
+     padding-left: 5px;
+     
+    
+     
+ }
+
+ .fatherElement{
+     display: flex;
+     flex-direction: row;
+     justify-content: center;
+      
+ }
+
+.button {
+    -webkit-transition-duration: 0.4s; 
+    transition-duration: 0.4s;
+    background-color: rgb(0, 217, 255);
+    margin-left: 10px;
+}
+
+.button:hover {
+    background-color: rgb(0, 132, 255);
+    color: white;
+}
+.input{
+    border-radius: 5px;
+}
