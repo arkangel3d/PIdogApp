@@ -2,8 +2,9 @@ import React from "react";
 import Dogs from "./Dogs";
 import { connect } from "react-redux";
 import { orderByZa,orderByAz } from "../actions";
+import style from "./Styles.module.css";
 //import { useSelector } from "react-redux";
-//import Pagination from './Pagination'
+import Pagination from './Pagination'
 
 //import {setPagination} from '../utils.js'
 
@@ -22,11 +23,14 @@ function Home(props) {
       
       <div>
         <p>Ordenar</p>
-        <button onClick={()=>props.orderByAz(props.nameDog)}>a-z</button>
-        <button onClick={()=>props.orderByZa(props.state)}>z-a</button>
+        <button onClick={()=>props.orderByAz()}>a-z</button>
+        <button onClick={()=>props.orderByZa()}>z-a</button>
       </div>
-      <Dogs array={(props.state)} />
-      {/* <div><Pagination/></div> */}
+      <div >
+      <Dogs array={(props.pages)} />
+      <div className={style.pagination}><Pagination/></div>
+      </div>
+      
     </div>
   );
 }

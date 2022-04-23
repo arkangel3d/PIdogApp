@@ -9,6 +9,7 @@ import DogDetails from './components/DogDetails';
 import SearchBar from './components/SearchBar.jsx'
 import SearchDogs from './components/SearchsDogs'
 //import { onFilter } from './utils';
+import Registrar from './components/Registart';
 
 function App() {
  
@@ -28,7 +29,11 @@ function App() {
      <SearchDogs/>
     </Route>
     <Route path={'/dog/:id'}  render={()=><><NavBar/><SearchBar/><DogDetails/></>}>
-    
+    </Route>
+    <Route path={'/registrar'}>
+     <NavBar/>
+     <SearchBar/>
+     <Registrar/>
     </Route>
     </>
     

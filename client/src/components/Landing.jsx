@@ -16,7 +16,7 @@ function Landing (){
                 <button onClick={() => handle() }>Start</button>
             </Link>
             
-            <button>Chat Bot</button>
+            {/* <button>Chat Bot</button> */}
         </div>
     )
 };

@@ -1,5 +1,20 @@
-
+.card {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 40%;
+    margin: 20px;
+  }
   
+  .card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  }
+  
+  .container {
+    padding: 2px 16px;
+  }
+  .avatar {
+    width:100%
+  }
 .dogCard{
     width: 550px;
     height: 180px;
@@ -60,3 +75,45 @@
 .input{
     border-radius: 5px;
 }
+.renderDiv{
+    
+        float: center;
+        width: 30%;
+        padding: 10px;
+  
+      
+}
+.row {
+   
+
+  }
+li{
+
+display: inline-block;
+overflow:hidden;
+
+ left:15%;
+ list-style-type:none;
+ margin:5px;
+ padding:2px;
+ position:relative;
+
+}
+.navbar {
+    
+    margin-bottom: 10px;
+    overflow: hidden;
+    background-color: rgb(242, 242, 242);
+    
+    top: 0;
+    width: 100%;
+  }
+  .navbar p {
+    float: left;
+    display: block;
+    color: #000000;
+    text-align: center;
+    padding: 14px;
+    text-decoration: none;
+  }
+  

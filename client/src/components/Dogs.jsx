@@ -1,6 +1,6 @@
 import React from "react";
 import Dog from "./Dog";
-
+import style from "./Styles.module.css";
 
 
 //import { render } from '@testing-library/react';
@@ -26,7 +26,7 @@ if(array.length<1){
     });
  
 
-  return <div>{renderDogs ? renderDogs : <h2>{array}</h2>}</div>;
+  return <div >{renderDogs ? renderDogs : <h2>{array}</h2>}</div>;
 };
 
 export default Dogs;

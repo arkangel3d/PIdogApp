@@ -4,6 +4,7 @@ import {
   ORDER_BY_ZA,
   GET_DOG_BY_ID,
   SEARCH_NAME,
+  PAGES
 } from "../actions/index.js";
 
 const initialState = {
@@ -12,6 +13,7 @@ const initialState = {
   dogsByName: [],
   dogById: [],
   searchName: "",
+  pages:[]
 };
 
 export default function rootReducer(state = initialState, action) {
@@ -45,6 +47,12 @@ export default function rootReducer(state = initialState, action) {
     return {
       ...state,
       searchName: action.payload,
+    };
+  }
+  if (action.type === PAGES) {
+    return {
+      ...state,
+      pages: action.payload,
     };
   }
 

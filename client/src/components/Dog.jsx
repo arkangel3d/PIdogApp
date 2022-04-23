@@ -1,46 +1,25 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import style from './Styles.module.css';
+import style from "./Styles.module.css";
 import { Link } from "react-router-dom";
-import { getDogById } from '../actions'
+import { getDogById } from "../actions";
 // { id, name, height, weight, life_span, temperament, image }
 const Dog = ({ id, name, height, weight, life_span, temperament, image }) => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   return (
-    
-    
-    <div key={`id${id}`}>
-
-    
-    <div className={`${style.dogCard} ${style.fatherElement}`}>
-     
-    <Link  to={`/dog/${id}`} onClick={()=> dispatch(getDogById(id))}>
-    <h3>{name}</h3>
-    </Link>
-   <div >
-    <div  >
-      <p>{weight}</p>
-
-    </div>
-    <div >
-      <p>{temperament}</p>
+    <div key={`id${id}`} className={`${style.card} ${style.renderDiv}`}>
+      <Link to={`/dog/${id}`} onClick={() => dispatch(getDogById(id))}>
+        <img className={style.avatar} src={`${image}` } alt="sin imagen"  />
+        </Link>
+        <div className={`${style.container}`}>
+          <h4>
+            <b>{name}</b>
+          </h4>
+          <p>weight: {weight}</p>
+          <p>Temperaments: {temperament}</p>
+        </div>
       
     </div>
-    <div >
-         <img className={`${style.elementImg}`} src={`${image}`} alt="sin imagen"/> 
-  
-    </div>
-    
-    
-  
-  </div>
-   
-   
-
-</div>
-</div>
-
   );
 };
 export default Dog;
-

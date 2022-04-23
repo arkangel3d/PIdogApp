@@ -5,13 +5,15 @@ const GET_DOGS_BY_NAME = "GET_DOGS_BY_NAME";
 const ORDER_BY_ZA = "ORDER_BY_ZA";
 const GET_DOG_BY_ID = "GET_DOG_BY_ID";
 const SEARCH_NAME = "SEARCH_NAME";
-// const CREATE_DOG = 'CREATE_DOG';
+const PAGES = "PAGES";
+
 export function dispatchDogs(data) {
   return { type: GET_DOGS, payload: data };
 }
 
 export function getDogs() {
   return function (dispatch) {
+   
     return axios.get(`http://localhost:3001/dogs`).then(({ data }) => {
       dispatch(dispatchDogs(data));
     });
@@ -26,30 +28,24 @@ export function getDogsByName(name) {
       });
   };
 }
-
-export function orderByZa(data) {
-  // return function(dispatch) {
-  //   return axios.get(`http://localhost:3001/dogs?name=${name}`)
-  //     .then(({ data }) => {
-  //   let dataSorted = data?.sort((x,y)=>y.name.localeCompare(x.name))
-  //     dispatch({type:GET_DOGS, payload:dataSorted });
-  //   });
-  // };
-  return function (dispatch) {
-    //let dataSorted = data.sort((x,y)=>y.name.localeCompare(x.name));
-    //console.log('hola',dataSorted)
-    let dataSorted = data?.sort((x, y) => y.name.localeCompare(x.name));
-    dispatch({ type: ORDER_BY_ZA, payload: dataSorted });
+export function setOrderZa(data) {
+ 
+  return { type: ORDER_BY_ZA, payload: data };
+}
+export function orderByZa(name='') {
+  return function(dispatch) {
+    return axios.get(`http://localhost:3001/dogs?name=${name}`)
+      .then(({ data }) => {
+       let dataSorted = data.reverse()
+      dispatch(setOrderZa( dataSorted ));
+    });
   };
 }
-export function orderByAz(name = "") {
+export function orderByAz(array) {
+ 
   return function (dispatch) {
-    return axios
-      .get(`http://localhost:3001/dogs?name=${name}`)
-      .then(({ data }) => {
-        let dataSorted = data?.sort((x, y) => x.name.localeCompare(y.name));
-        dispatch({ type: GET_DOGS, payload: dataSorted });
-      });
+    
+    return dispatch(getDogs());
   };
 }
 export function searchName(name) {
@@ -68,5 +64,9 @@ export function getDogById(id) {
     });
   };
 }
+export function setPages(data) {
+ 
+  return { type: PAGES, payload: data };
+}
 
-export { GET_DOGS, GET_DOGS_BY_NAME, ORDER_BY_ZA, GET_DOG_BY_ID, SEARCH_NAME };
+export { GET_DOGS, GET_DOGS_BY_NAME, ORDER_BY_ZA, GET_DOG_BY_ID, SEARCH_NAME,PAGES };
