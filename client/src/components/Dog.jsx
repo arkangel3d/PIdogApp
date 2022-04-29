@@ -4,10 +4,12 @@ import style from "./Styles.module.css";
 import { Link } from "react-router-dom";
 import { getDogById } from "../actions";
 // { id, name, height, weight, life_span, temperament, image }
+
 const Dog = ({ id, name, height, weight, life_span, temperament, image }) => {
   const dispatch = useDispatch();
+  
   return (
-    <div key={`id${id}`} className={`${style.card} ${style.renderDiv}`}>
+    <div key={`id${id}`} className={`${style.card}`}>
       <Link to={`/dog/${id}`} onClick={() => dispatch(getDogById(id))}>
         <img className={style.avatar} src={`${image}` } alt="sin imagen"  />
         </Link>

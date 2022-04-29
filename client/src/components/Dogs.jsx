@@ -17,7 +17,7 @@ if(array.length<1){
       let obj = {
         id: dog.id,
         name: dog.name,
-        weight: dog.weight.metric,
+        weight: dog.weight.imperial,
         image: dog.image.url,
         temperament: dog.temperament,
       };
@@ -26,7 +26,7 @@ if(array.length<1){
     });
  
 
-  return <div >{renderDogs ? renderDogs : <h2>{array}</h2>}</div>;
+  return <div className= {style.renderDiv}>{renderDogs ? renderDogs : <h2>{array}</h2>}</div>;
 };
 
 export default Dogs;

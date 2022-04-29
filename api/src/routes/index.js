@@ -18,7 +18,7 @@ const router = Router();
 // Ejemplo: router.use('/auth', authRouter);
 
 router.get("/dogs", async (req, res) => {
-  const { name } = req.query;
+  const { name,limit, offset } = req.query;
   
   const dogsApi = await axios.get(url);
   const dogsApiSorted = dogsApi.data.map((d)=>{
@@ -31,15 +31,23 @@ router.get("/dogs", async (req, res) => {
     const { id, name, height, weight, life_span, temperaments, imageId } = dog;
     return await sortData(id, name, height, weight, life_span, temperaments, imageId);
   });
-  const dataResults = await Promise.all(data)
-  let response = dogsApiSorted.concat(dataResults);
+  const dataResults = await Promise.all(data);
+
+  const SortArray=(x, y)=>{
+    return x.name.localeCompare(y.name);
+  };
+  let response = dogsApiSorted.concat(dataResults).sort(SortArray);
 // ++++COPIAR TEMPERAMENTOS DESDE LA API  A LA BASE DE DATOS+++++
         //  await copyTemp(response); 
   if (name) {
     let dataArray = response.filter((dog) =>
       dog.name.toLowerCase().includes(name.toLowerCase())
     );
+    if(dataArray.length ===0 )return res.send('No se encuentra raza');
     return res.json(dataArray);
+  }if(limit && offset){
+    let data = response.slice(limit,offset);
+    return res.json(data)
   }
   return res.json(response);
 });
@@ -117,7 +125,7 @@ router.get("/temperament", async (req, res) => {
       let arrayTemperamets = dog.temperament?.split(", ");
 
       if (arrayTemperamets?.some((t) => t === element.name)) {
-        arrayDogs.push(dog.name);
+        arrayDogs.push({id:dog.id,name:dog.name,temperament:dog.temperament});
       }
     });
     let obj = {
@@ -130,4 +138,15 @@ router.get("/temperament", async (req, res) => {
   res.json(temperamentDog);
   
 });
+router.get('/temp', async(req, res)=>{
+  try {
+    const response = await Temperament.findAll();
+    
+    res.json(response)
+  } catch (error) {
+    res.send(error)
+  }
+  
+  
+})
 module.exports = router;

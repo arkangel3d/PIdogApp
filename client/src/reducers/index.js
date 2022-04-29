@@ -46,7 +46,7 @@ export default function rootReducer(state = initialState, action) {
   if (action.type === SEARCH_NAME) {
     return {
       ...state,
-      searchName: action.payload,
+      dogs: action.payload,
     };
   }
   if (action.type === PAGES) {

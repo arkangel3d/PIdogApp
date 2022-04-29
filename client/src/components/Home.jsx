@@ -1,7 +1,7 @@
 import React from "react";
 import Dogs from "./Dogs";
 import { connect } from "react-redux";
-import { orderByZa,orderByAz } from "../actions";
+import { orderByZa,orderByAz,orderByWeight, orderByWeightHigh } from "../actions";
 import style from "./Styles.module.css";
 //import { useSelector } from "react-redux";
 import Pagination from './Pagination'
@@ -16,17 +16,18 @@ function Home(props) {
  // const dispatch = useDispatch();
   //const state = useSelector((state) => state.dogs);
 
-  
 
   return (
     <div>
       
       <div>
-        <p>Ordenar</p>
+      
         <button onClick={()=>props.orderByAz()}>a-z</button>
         <button onClick={()=>props.orderByZa()}>z-a</button>
+        <button onClick={()=>props.orderByWeight(props.state)}>peso -</button>
+        <button onClick={()=>props.orderByWeightHigh(props.state)}>peso +</button>
       </div>
-      <div >
+      <div>
       <Dogs array={(props.pages)} />
       <div className={style.pagination}><Pagination/></div>
       </div>
@@ -44,8 +45,9 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     orderByZa: (name) => dispatch(orderByZa(name)),
-    orderByAz: (name) => dispatch(orderByAz(name))
-    
+    orderByAz: (name) => dispatch(orderByAz(name)),
+    orderByWeight: (array) => dispatch(orderByWeight(array)),
+    orderByWeightHigh: (array) => dispatch(orderByWeightHigh(array))
   };
 }
 

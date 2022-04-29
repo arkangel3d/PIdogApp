@@ -1,42 +1,23 @@
 import React from "react";
 import style from './Styles.module.css';
 const RenderDogDetails =({dog})=>{
+  // { id, name, height, weight, life_span, temperament, image }
+
 return (
-    <div key={dog.id}>
-     
-    
-    <div className={`${style.dogCard} ${style.fatherElement}`}>
-     
-     
-    <h3>{dog.name}</h3>
+  <div key={`id${dog.id}`} className={`${style.card} ${style.renderDiv}`}>
+  
+    <img className={style.avatar} src={`${dog.image.url}` } alt="sin imagen"  />
 
-   <div >
-    <div  >
-      <p>{dog.weight.metric}</p>
-
-    </div>
-    <div >
-      <p>{dog.temperament}</p>
-      
-    </div>
-    <div >
-         <img className={`${style.elementImg}`} src={`${dog.image.url}`} alt="sin imagen"/> 
-  
-    </div>
-    <div >
-    <p>{dog.height.metric}</p>
-  
-    </div>
-    <div >
-    <p>{dog.life_span}</p>
-  
+    <div className={`${style.container}`}>
+      <h4>
+        <b>{dog.name}</b>
+      </h4>
+      <p >Weight: {dog.weight.imperial}</p>
+      <p title={dog.height.metric}>Height: {dog.height.imperial}</p>
+      <p>Life Span: {dog.life_span}</p>
+      <p>Temperaments: {dog.temperament}</p>
     </div>
   
-  </div>
-   
-   
-
-</div>
 </div>
 )
 };

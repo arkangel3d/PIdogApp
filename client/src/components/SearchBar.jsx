@@ -23,8 +23,8 @@ function SearchBar(props) {
   }
   const { title } = dog; 
   return (
-    <div>
-      <div>
+   
+      
         <form onSubmit={(e) => handleSubmit(e)}>
           <input
            name="search"
@@ -38,8 +38,8 @@ function SearchBar(props) {
           
           
         </form>
-      </div>
-    </div>
+   
+    
   );
 };
 
