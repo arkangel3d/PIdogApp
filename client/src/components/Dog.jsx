@@ -3,9 +3,8 @@ import { useDispatch } from "react-redux";
 import style from "./Styles.module.css";
 import { Link } from "react-router-dom";
 import { getDogById } from "../actions";
-// { id, name, height, weight, life_span, temperament, image }
 
-const Dog = ({ id, name, height, weight, life_span, temperament, image }) => {
+const Dog = ({ id, name, weight, temperament, image }) => {
   const dispatch = useDispatch();
   
   return (

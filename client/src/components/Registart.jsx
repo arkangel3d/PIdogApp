@@ -19,7 +19,7 @@ const Registrar = () => {
     const [imgFile, setImgFile] = useState('');
     const [status,setStatus] = useState('');
     const [statusFile,setStatusFile] = useState('');
-    const [errorsTemps ,setErrorsTemps] = useState('Debes ingresar por lo menos 3 temperamentos');
+    const [errorsTemps ,setErrorsTemps] = useState('You must enter at least 4 temperaments');
     const [errors,setErrors] = useState({
         name:'', 
         height1:'',
@@ -53,7 +53,7 @@ const Registrar = () => {
         errors.height1 = 'Only numbers'
        }
        if(input.height2<input.height1){
-         errors.height2 = 'debe ser mayor al numero anterior ingresado'
+         errors.height2 = 'must be greater than the previous number entered'
        }
        if(!Number(input.weight1)){
         errors.weight1 = 'Only numbers'
@@ -62,7 +62,7 @@ const Registrar = () => {
         errors.weight1 = 'Only numbers'
        }
        if(input.weight2<input.weight1){
-         errors.weight2 = 'debe ser mayor al numero anterior ingresado'
+         errors.weight2 = 'must be greater than the previous number entered'
        }
        if(!Number(input.life_span1)){
         errors.life_span1 = 'Only numbers'
@@ -71,7 +71,7 @@ const Registrar = () => {
         errors.life_span1 = 'Only numbers'
        }
        if(input.life_span2<input.life_span1){
-         errors.life_span2 = 'debe ser mayor al numero anterior ingresado'
+         errors.life_span2 = 'must be greater than the previous number entered'
        }
                      
         return errors
@@ -80,7 +80,7 @@ const Registrar = () => {
       const validateTemps=(input)=>{
         let error =''
         if(input.length<=3){
-            error = 'Debes ingresar por lo menos 4 temperamentos'
+            error = 'You must enter at least 4 temperaments'
         }
         return error
     }
@@ -158,7 +158,7 @@ const Registrar = () => {
             setInputTemp([])
             document.getElementById('form').reset();
             setImgFile('')
-            setStatus(`Raza registrada con exito con el id ${data.data.id}`)
+            setStatus(`Successful registration with id ${data.data.id}`)
             // console.log(data)
         })
         .catch(err=>setStatus('Por favor verifica los datos, e intenta nuevamente'))
@@ -172,35 +172,35 @@ const Registrar = () => {
     <div>
         
         <form id="form" className={style.form} onSubmit={(e)=>handleOnSubmit(e,input,inputTemp,urlImg,imgFile)}>
-            {<p>{status}</p>}
+            {<b>{status}</b>}
             {<p>{statusFile}</p>}
-            <label className={style.label} >Name</label>
+            <label className={style.label} >Breeds</label>
             <input autoComplete={'nope'} name={'name'} type={'text'} onChange={(e)=>handleOnchance(e)} value={name}/>
-            <p>{errors.name}</p>
+            <p className={style.errors}>{errors.name}</p>
             <label className={style.label}>Height</label>
-            <input autoComplete={'nope'} className={style.input} name={'height1'} type={'text'} onChange={(e)=>handleOnchance(e)} value={height1}/>
-            <input autoComplete={'nope'} className={style.input} name={'height2'} type={'text'} onChange={(e)=>handleOnchance(e)} value={height2}/>
-            <p>{errors.height1} {errors.height2}</p>
+            <input autoComplete={'nope'} className={style.input} name={'height1'} type={'text'} onChange={(e)=>handleOnchance(e)} value={height1} placeholder={'in'}/>
+            <input autoComplete={'nope'} className={style.input} name={'height2'} type={'text'} onChange={(e)=>handleOnchance(e)} value={height2} placeholder={'in'}/>
+            <p className={style.errors}>{errors.height1} {errors.height2}</p>
             <label className={style.label}>Weight</label>
-            <input autoComplete={'nope'} className={style.input} name={'weight1'} type={'text'} onChange={(e)=>handleOnchance(e)} value={weight1}/>
-            <input autoComplete={'nope'} className={style.input} name={'weight2'} type={'text'} onChange={(e)=>handleOnchance(e)} value={weight2}/>
-            <p>{errors.weight1} {errors.weight2}</p>
+            <input autoComplete={'nope'} className={style.input} name={'weight1'} type={'text'} onChange={(e)=>handleOnchance(e)} value={weight1} placeholder={'lbs'}/>
+            <input autoComplete={'nope'} className={style.input} name={'weight2'} type={'text'} onChange={(e)=>handleOnchance(e)} value={weight2} placeholder={'lbs'}/>
+            <p className={style.errors}>{errors.weight1} {errors.weight2}</p>
             <label className={style.label}>Life Span</label>
             <input autoComplete={'nope'} className={style.input} name={'life_span1'} type={'text'} onChange={(e)=>handleOnchance(e)} value={life_span1}/>
             <input autoComplete={'nope'} className={style.input} name={'life_span2'} type={'text'} onChange={(e)=>handleOnchance(e)} value={life_span2}/>
-            <p>{errors.life_span1} {errors.life_span2}</p>
+            <p className={style.errors}>{errors.life_span1} {errors.life_span2}</p>
    
-            <p>{input.life_span1&&input.life_span2? 'Clic en el boton temperaments para elegir':null}</p>
-            <input type={'button'} value={'temperaments'} onClick={()=>getTemperaments()}/><br/>
+            <p>{input.life_span1&&input.life_span2? 'Click the button to choose temperaments':null}</p>
+            <input type={'button'} value={'Temperaments'} onClick={()=>getTemperaments()}/><br/>
             {temp&&<textarea type={'text'} value={inputTemp} readOnly/>}
-            <p>{errorsTemps}</p>
+            <p className={style.errors}>{errorsTemps}</p>
             {temp&&<input type={'button'} onClick={()=>onDeleteTemps(inputTemp)} value={'Delete'}/>}
             
             <label className={style.label}>Image</label>
-            <input type={'file'} id='img' accept={'image/jpeg'} ref={inputImg} onChange={(e)=>handleImage(e)} />
+            <input type={'file'} id='img' accept={'image/jpeg'} ref={inputImg} onChange={(e)=>handleImage(e)}/>
             
             <div className={style.submitP}>
-            <input disabled={ imgFile &&!errorsTemps && Object.keys(errors).length===0?false:true} className={style.submit} type={'submit'} value={'enviar'}/>
+            <input disabled={ imgFile &&!errorsTemps && Object.keys(errors).length===0?false:true} className={style.submit} type={'submit'} value={'Submit'}/>
             </div>
             
          

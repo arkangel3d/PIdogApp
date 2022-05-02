@@ -1,22 +1,22 @@
 const axios = require("axios");
-// const { HOST_DEV } = process.env;
 const GET_DOGS = "GET_DOGS";
 const GET_DOGS_BY_NAME = "GET_DOGS_BY_NAME";
 const ORDER_BY_ZA = "ORDER_BY_ZA";
 const GET_DOG_BY_ID = "GET_DOG_BY_ID";
 const SEARCH_NAME = "SEARCH_NAME";
 const PAGES = "PAGES";
-
+// const  {LOCAL_HOST}  = process.env.local
 export function dispatchDogs(data) {
   return { type: GET_DOGS, payload: data };
 };
 
 export function getDogs() {
   return function (dispatch) {
+  
    
     return axios.get(`http://localhost:3001/dogs`).then(({ data }) => {
       dispatch(dispatchDogs(data));
-    });
+    })
   };
 };
 export function getDogsByName(name) {
@@ -57,11 +57,13 @@ export function dispatchDog(data) {
  
   return { type: GET_DOG_BY_ID, payload: data };
 };
-export function getDogById(id) {
-  return function (dispatch) {
-    return axios.get(`http://localhost:3001/dogs/${id}`).then(({ data }) => {
-      dispatch(dispatchDog(data));
-    });
+
+export  function getDogById(id) {
+  
+  return async function (dispatch) {
+    let res = await axios.get(`http://localhost:3001/dogs/${id}`)
+    
+    return dispatch(dispatchDog(res.data));
   };
 };
 
@@ -79,9 +81,9 @@ export function orderByWeight() {
     return axios.get(`http://localhost:3001/dogs`)
     .then(({ data }) => {
       let data1 =  data.sort(function (a, b) {
-        let numA = Number(a.weight.imperial.split('-')[1])
-        console.log(numA)
-        let numb= Number(b.weight.imperial.split('-')[1])
+        let numA = Number(a.weight.imperial.split('-')[0])
+  
+        let numb= Number(b.weight.imperial.split('-')[0])
          if(numA === isNaN || numb === isNaN) return 0
        
          if (numA > numb) {
@@ -103,8 +105,8 @@ export function orderByWeightHigh(array) {
   return function (dispatch) {
     return axios.get(`http://localhost:3001/dogs`).then(({ data }) => {
       let data1 =  data.sort(function (a, b) {
-        let numA = Number(a.weight.imperial.split('-')[0])
-        let numb= Number(b.weight.imperial.split('-')[0])
+        let numA = Number(a.weight.imperial.split('-')[1])
+        let numb= Number(b.weight.imperial.split('-')[1])
          if(numA === isNaN || numb === isNaN) return 0
        
          if (numA < numb) {

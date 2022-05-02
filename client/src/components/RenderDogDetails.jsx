@@ -4,9 +4,9 @@ const RenderDogDetails =({dog})=>{
   // { id, name, height, weight, life_span, temperament, image }
 
 return (
-  <div key={`id${dog.id}`} className={`${style.card} ${style.renderDiv}`}>
+  <div key={dog.id} className={`${style.card} ${style.searchDog}`}>
   
-    <img className={style.avatar} src={`${dog.image.url}` } alt="sin imagen"  />
+    <img className={style.avatar} src={dog.image.url} alt="sin imagen"  />
 
     <div className={`${style.container}`}>
       <h4>

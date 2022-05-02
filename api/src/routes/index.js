@@ -24,13 +24,15 @@ router.get("/dogs", async (req, res) => {
   const dogsApiSorted = dogsApi.data.map((d)=>{
     const {id,name, height, weight, life_span, temperament, image} =d;
     return sortDogsApi(id,name, height, weight, life_span, temperament, image)
-  })
+  });
+
   const dogsDataBase = await Dog.findAll({ include: Temperament, });
   
   const data = dogsDataBase.map(async(dog) => {
     const { id, name, height, weight, life_span, temperaments, imageId } = dog;
     return await sortData(id, name, height, weight, life_span, temperaments, imageId);
   });
+  
   const dataResults = await Promise.all(data);
 
   const SortArray=(x, y)=>{
@@ -38,7 +40,7 @@ router.get("/dogs", async (req, res) => {
   };
   let response = dogsApiSorted.concat(dataResults).sort(SortArray);
 // ++++COPIAR TEMPERAMENTOS DESDE LA API  A LA BASE DE DATOS+++++
-        //  await copyTemp(response); 
+            // await copyTemp(response); 
   if (name) {
     let dataArray = response.filter((dog) =>
       dog.name.toLowerCase().includes(name.toLowerCase())
@@ -69,7 +71,7 @@ router.get("/dogs/:id", async (req, res) => {
   const dataResults = await Promise.all(data)
   let response = dogsApiSorted.concat(dataResults);
   const dataArray = response.find((dog) => dog.id === Number(id));
-  if (!dataArray) return res.status(404).send("id no encontrado");
+  if (!dataArray) return res.json({ msg: "id no encontrado" });
   return res.json(dataArray);
 });
 
@@ -81,7 +83,7 @@ router.post("/dog", async (req, res) => {
   try {
     let dog = await Dog.create({ id, name, height, weight, life_span });
     // fooInstance.createBar()
-      // await dog.createImage({image:image});
+       await dog.createImage({image:image});
       let imagen = await dog.createImage({image:image});
       
     let getIdsTemperaments = await temperament.map(async (element) => {
@@ -98,9 +100,11 @@ router.post("/dog", async (req, res) => {
 
     dog.dataValues.temperament = temperament.join(", ");
     dog.dataValues.image = imagen;
+
     res.status(201).json(dog);
   } catch (error) {
-    res.status(402).send(error);
+    console.log(error)
+    res.status(402).send('hubo un problema, vuelve a intentar');
   }
 });
 router.get("/temperament", async (req, res) => {

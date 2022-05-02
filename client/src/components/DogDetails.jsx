@@ -11,6 +11,7 @@ const DogDetails = () => {
 
      setLoading(true)
    },[dog]);
+   
   useEffect(()=>{
 
    return setLoading(false)
@@ -20,9 +21,11 @@ const DogDetails = () => {
   if (!loading) {
     return <div>cargando</div>;
   }
+
   // const handleClick=()=>{
   //   history.goBack()
   // }
+
   return (
     <div>
       {/* <div><button onClick={()=>handleClick()}>Atras</button></div> */}

@@ -1,10 +1,10 @@
 import { React, useState } from "react";
 import { connect } from "react-redux";
-//import { useDispatch } from "react-redux";
+
 import { getDogsByName,searchName } from "../actions";
 import { useHistory } from "react-router-dom";
 function SearchBar(props) {
-  //const dispatch = useDispatch();
+
   const[dog, setDog] = useState('');
   const history = useHistory()
  
@@ -29,12 +29,12 @@ function SearchBar(props) {
           <input
            name="search"
             type={"text"}
-            placeholder={"Busqueda por raza"}
+            placeholder={"Search by Breeds"}
             onChange={(e) => handleChange(e)}
             value={title}
           />
           
-          <input type="submit" value={"Buscar"}/>
+          <input type="submit" value={"Search"}/>
           
           
         </form>
